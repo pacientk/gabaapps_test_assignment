@@ -31,7 +31,7 @@ export function SearchInput({
       />
 
       <input
-        type="search"
+        type="text"
         aria-label="Search users"
         value={value}
         onChange={(e) => onChange(e.target.value)}

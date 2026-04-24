@@ -112,7 +112,7 @@ export function UsersTable({
                       <div className="flex items-center gap-3">
                         <UserAvatar src={user.image} name={fullName} size="sm" />
                         <div>
-                          <p className="font-medium text-gray-900">{fullName}</p>
+                          <p className="font-semibold text-gray-900">{fullName}</p>
                           <UserBadge role={user.role} />
                         </div>
                       </div>

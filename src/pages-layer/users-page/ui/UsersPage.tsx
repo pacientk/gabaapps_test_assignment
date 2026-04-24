@@ -101,8 +101,8 @@ export function UsersPage() {
     <>
       <div className="min-h-screen bg-gray-50">
         {/* Page header */}
-        <div className="border-b border-gray-200 bg-white px-4 py-4 sm:px-8">
-          <div className="mx-auto max-w-7xl">
+        <div className="border-b border-gray-200 bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-4 sm:px-8">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-gray-900">Users</h1>
 

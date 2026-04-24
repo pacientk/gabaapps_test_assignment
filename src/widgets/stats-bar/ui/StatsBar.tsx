@@ -8,15 +8,15 @@ import { useStats } from '../model/useStats'
 
 function StatsBarSkeleton() {
   return (
-    <div className="flex min-h-[72px] items-center gap-0 overflow-x-auto border-b border-gray-200 bg-white px-4 sm:px-8">
-      <div className="mx-auto flex w-full max-w-7xl gap-0">
+    <div className="border-b border-gray-200 bg-gray-50">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-4 sm:px-8 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="flex min-w-[150px] flex-col gap-1.5 px-6 py-4 first:pl-0 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-gray-200"
+            className="flex flex-col gap-2 rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
           >
             <Skeleton className="h-3 w-16" />
-            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-6 w-24" />
           </div>
         ))}
       </div>
@@ -24,7 +24,7 @@ function StatsBarSkeleton() {
   )
 }
 
-// ─── Individual stat cell ─────────────────────────────────────────────────────
+// ─── Individual stat card ─────────────────────────────────────────────────────
 
 interface StatCellProps {
   label: string
@@ -34,7 +34,7 @@ interface StatCellProps {
 
 function StatCell({ label, icon, children }: StatCellProps) {
   return (
-    <div className="flex min-w-[150px] flex-col justify-center gap-0.5 px-6 py-4 first:pl-0 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-gray-200">
+    <div className="flex flex-col gap-1.5 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
         {icon}
         {label}
@@ -47,9 +47,9 @@ function StatCell({ label, icon, children }: StatCellProps) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 /**
- * Stats summary bar computed client-side from all 208 users.
+ * Stats summary computed client-side from all 208 users.
  * Shows: total users, gender split, average age, top 3 departments.
- * Mobile: horizontal scroll. Skeleton while the full dataset loads.
+ * Renders as a 4-card grid (2-col mobile, 4-col desktop). Skeleton while loading.
  */
 export function StatsBar() {
   const { stats, isLoading } = useStats()
@@ -57,8 +57,8 @@ export function StatsBar() {
   if (isLoading || !stats) return <StatsBarSkeleton />
 
   return (
-    <div className="overflow-x-auto border-b border-gray-200 bg-white px-4 sm:px-8">
-      <div className="mx-auto flex w-full max-w-7xl">
+    <div className="border-b border-gray-200 bg-gray-50">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-4 sm:px-8 lg:grid-cols-4">
 
         {/* Total users */}
         <StatCell

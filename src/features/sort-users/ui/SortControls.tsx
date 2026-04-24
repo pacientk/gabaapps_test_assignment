@@ -25,10 +25,12 @@ export function SortControls({
   return (
     <div className="flex items-center gap-1.5">
       <select
+        id="sort-by"
+        name="sortBy"
         value={sortBy}
         onChange={(e) => onSortByChange(e.target.value as SortableField | '')}
         aria-label="Sort by field"
-        className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="h-9 rounded-lg border border-gray-200 bg-white pl-3 pr-8 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="">Sort by…</option>
         {SORT_FIELDS.map((f) => (
@@ -38,23 +40,24 @@ export function SortControls({
         ))}
       </select>
 
-      {sortBy && (
-        <button
-          onClick={() => onOrderChange(order === 'asc' ? 'desc' : 'asc')}
-          aria-label={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-        >
-          {order === 'asc' ? (
-            <ArrowUp className="h-4 w-4" />
-          ) : (
-            <ArrowDown className="h-4 w-4" />
-          )}
-        </button>
-      )}
-
-      {!sortBy && (
-        <ArrowUpDown className="h-4 w-4 text-gray-300" aria-hidden="true" />
-      )}
+      <button
+        onClick={() => onOrderChange(order === 'asc' ? 'desc' : 'asc')}
+        disabled={!sortBy}
+        aria-label={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
+        className={cn(
+          'flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white transition-colors',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+          !sortBy
+            ? 'cursor-not-allowed text-gray-300 opacity-50'
+            : 'text-gray-500 hover:border-gray-300 hover:text-gray-700',
+        )}
+      >
+        {order === 'asc' ? (
+          <ArrowUp className="h-4 w-4" />
+        ) : (
+          <ArrowDown className="h-4 w-4" />
+        )}
+      </button>
     </div>
   )
 }

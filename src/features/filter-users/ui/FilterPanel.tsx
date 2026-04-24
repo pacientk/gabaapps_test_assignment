@@ -1,6 +1,6 @@
 'use client'
 
-import { SlidersHorizontal, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { cn } from '@/shared/lib/cn'
 import type { UserGender } from '@/entities/user/model/schemas'
 
@@ -21,7 +21,7 @@ const GENDER_OPTIONS: { value: UserGender | ''; label: string }[] = [
 ]
 
 const selectClass = cn(
-  'h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700',
+  'h-9 rounded-lg border border-gray-200 bg-white pl-3 pr-8 text-sm text-gray-700',
   'focus:outline-none focus:ring-2 focus:ring-blue-500',
   'transition-colors',
 )
@@ -41,13 +41,10 @@ export function FilterPanel({
 }: FilterPanelProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <SlidersHorizontal
-        className="h-4 w-4 shrink-0 text-gray-400"
-        aria-hidden="true"
-      />
-
       {/* Gender */}
       <select
+        id="filter-gender"
+        name="gender"
         value={gender}
         onChange={(e) => onGenderChange(e.target.value as UserGender | '')}
         aria-label="Filter by gender"
@@ -62,6 +59,8 @@ export function FilterPanel({
 
       {/* Department */}
       <select
+        id="filter-department"
+        name="department"
         value={department}
         onChange={(e) => onDepartmentChange(e.target.value)}
         aria-label="Filter by department"
