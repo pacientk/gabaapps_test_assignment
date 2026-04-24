@@ -6,25 +6,44 @@ import type { User } from '@/entities/user/model/schemas'
 import { UserAvatar } from '@/entities/user/ui/UserAvatar'
 import { UserBadge } from '@/entities/user/ui/UserBadge'
 import { Skeleton } from '@/shared/ui/Skeleton/Skeleton'
+import { SortableColumn } from '@/features/sort-users/ui/SortControls'
+import type { SortableField, SortOrder } from '@/entities/user/api/usersApi'
 
 interface UsersTableProps {
   users: User[]
   isLoading?: boolean
   selectedUserId: number | null
   onRowClick: (userId: number) => void
+  sortBy: SortableField | ''
+  order: SortOrder
+  onSort: (field: SortableField) => void
 }
 
-const COLUMNS = ['User', 'Age', 'Gender', 'Department', 'Company', 'Email', 'City'] as const
+type ColumnDef =
+  | { label: string; sortField?: never; plain: true }
+  | { label: string; sortField: SortableField; plain?: never }
+
+const COLUMNS: ColumnDef[] = [
+  { label: 'User', plain: true },
+  { label: 'Age', sortField: 'age' },
+  { label: 'Gender', plain: true },
+  { label: 'Department', plain: true },
+  { label: 'Company', sortField: 'company.name' },
+  { label: 'Email', sortField: 'email' },
+  { label: 'City', plain: true },
+]
 
 /**
- * Table view of the users list.
- * Shows: avatar, name, age, gender, department, company, email, city.
+ * Table view of the users list with sortable column headers.
  */
 export function UsersTable({
   users,
   isLoading = false,
   selectedUserId,
   onRowClick,
+  sortBy,
+  order,
+  onSort,
 }: UsersTableProps) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
@@ -32,11 +51,20 @@ export function UsersTable({
         <thead>
           <tr className="border-b border-gray-100 bg-gray-50">
             {COLUMNS.map((col) => (
-              <th
-                key={col}
-                className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-400"
-              >
-                {col}
+              <th key={col.label} className="px-4 py-3 text-left">
+                {col.plain ? (
+                  <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                    {col.label}
+                  </span>
+                ) : (
+                  <SortableColumn
+                    field={col.sortField}
+                    label={col.label}
+                    currentSortBy={sortBy}
+                    currentOrder={order}
+                    onClick={onSort}
+                  />
+                )}
               </th>
             ))}
           </tr>

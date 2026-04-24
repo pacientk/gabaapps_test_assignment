@@ -8,28 +8,48 @@ import { UserCard } from '@/entities/user/ui/UserCard'
 import { UserCardSkeleton } from '@/entities/user/ui/UserCardSkeleton'
 import { Pagination } from '@/features/paginate-users/ui/Pagination'
 import { usePagination } from '@/features/paginate-users/model/usePagination'
+import { useSearchUsers } from '@/features/search-users/model/useSearchUsers'
+import { useFilterUsers } from '@/features/filter-users/model/useFilterUsers'
+import { useSortUsers } from '@/features/sort-users/model/useSortUsers'
+import { UsersFilters } from '@/widgets/users-filters/ui/UsersFilters'
 import { UsersTable } from '@/widgets/users-table/ui/UsersTable'
 
 type ViewMode = 'grid' | 'table'
 
 /**
  * Main users list page composition.
- * Manages view mode (grid/table) locally; all other state is in the URL.
+ * Assembles all feature hooks and wires them to useUsers + UI components.
  */
 export function UsersPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
 
   const { page, limit, setPage, setLimit } = usePagination()
+  const { inputValue, urlSearch, setInputValue, clearSearch } = useSearchUsers()
+  const {
+    gender,
+    department,
+    setGender,
+    setDepartment,
+    clearAll: clearAllFilters,
+    activeCount: activeFilterCount,
+  } = useFilterUsers()
+  const {
+    sortBy,
+    order,
+    setSortBy,
+    setOrder,
+    toggleSort,
+  } = useSortUsers()
 
-  const { data, isLoading, isError, refetch } = useUsers({
+  const { data, isLoading, isError, isFetching, refetch } = useUsers({
     page,
     limit,
-    search: '',
-    gender: '',
-    department: '',
-    sortBy: '',
-    order: 'asc',
+    search: urlSearch,
+    gender,
+    department,
+    sortBy,
+    order,
   })
 
   const users = data?.users ?? []
@@ -41,20 +61,18 @@ export function UsersPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleClearAll = () => {
+    clearSearch()
+    clearAllFilters()
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Page header */}
       <div className="border-b border-gray-200 bg-white px-4 py-4 sm:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-              {!isLoading && !isError && (
-                <p className="mt-0.5 text-sm text-gray-500">
-                  Showing {users.length} of {total} users
-                </p>
-              )}
-            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Users</h1>
 
             {/* View toggle */}
             <div className="flex items-center gap-1 rounded-lg border border-gray-200 bg-gray-50 p-0.5">
@@ -91,6 +109,29 @@ export function UsersPage() {
 
       {/* Main content */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-8">
+
+        {/* Filter bar */}
+        <div className="mb-6">
+          <UsersFilters
+            searchValue={inputValue}
+            onSearchChange={setInputValue}
+            onSearchClear={clearSearch}
+            isSearching={isFetching && !!urlSearch}
+            gender={gender}
+            department={department}
+            onGenderChange={setGender}
+            onDepartmentChange={setDepartment}
+            onClearAllFilters={handleClearAll}
+            activeFilterCount={activeFilterCount}
+            sortBy={sortBy}
+            order={order}
+            onSortByChange={setSortBy}
+            onOrderChange={setOrder}
+            total={total}
+            showing={users.length}
+          />
+        </div>
+
         {/* Error state */}
         {isError && (
           <div
@@ -117,19 +158,20 @@ export function UsersPage() {
             <p className="text-sm text-gray-500">
               Try adjusting your search or filters
             </p>
+            <button
+              onClick={handleClearAll}
+              className="mt-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            >
+              Clear filters
+            </button>
           </div>
         )}
 
         {/* Grid view */}
         {viewMode === 'grid' && !isError && (
-          <div
-            aria-busy={isLoading}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          >
+          <div aria-busy={isLoading} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {isLoading
-              ? Array.from({ length: limit }).map((_, i) => (
-                  <UserCardSkeleton key={i} />
-                ))
+              ? Array.from({ length: limit }).map((_, i) => <UserCardSkeleton key={i} />)
               : users.map((user) => (
                   <UserCard
                     key={user.id}
@@ -148,6 +190,9 @@ export function UsersPage() {
             isLoading={isLoading}
             selectedUserId={selectedUserId}
             onRowClick={setSelectedUserId}
+            sortBy={sortBy}
+            order={order}
+            onSort={toggleSort}
           />
         )}
 
