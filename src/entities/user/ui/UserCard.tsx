@@ -44,6 +44,7 @@ export function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
 
   return (
     <article
+      data-testid="user-card"
       role="button"
       tabIndex={0}
       aria-pressed={isSelected}

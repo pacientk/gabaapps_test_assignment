@@ -34,3 +34,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.idea/
+
+# AI / Claude tooling
+.ai/
+.claude/
+.context/
+
+# test artifacts
+test-results/

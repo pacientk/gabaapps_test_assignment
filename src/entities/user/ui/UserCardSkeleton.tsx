@@ -6,7 +6,7 @@ import { Skeleton } from '@/shared/ui/Skeleton/Skeleton'
  */
 export function UserCardSkeleton() {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <div data-testid="skeleton-card" className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       {/* Top row */}
       <div className="flex items-start gap-3">
         <Skeleton className="h-12 w-12 rounded-full" />

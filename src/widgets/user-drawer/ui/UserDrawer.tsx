@@ -40,28 +40,22 @@ export function UserDrawer({ userId, onClose }: UserDrawerProps) {
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-      <Dialog.Portal forceMount>
+      <Dialog.Portal>
         {/* Backdrop */}
         <Dialog.Overlay
-          forceMount
           className={cn(
             'fixed inset-0 z-50 bg-black/40 backdrop-blur-sm',
-            'transition-opacity duration-300',
-            'data-[state=open]:opacity-100',
-            'data-[state=closed]:opacity-0 data-[state=closed]:pointer-events-none',
+            'animate-in fade-in duration-300',
           )}
         />
 
         {/* Drawer panel */}
         <Dialog.Content
-          forceMount
           aria-label="User details"
           className={cn(
             'fixed right-0 top-0 z-50 flex h-full w-full flex-col bg-white shadow-2xl',
             'sm:max-w-[560px]',
-            'transition-transform duration-300 ease-out',
-            'data-[state=open]:translate-x-0',
-            'data-[state=closed]:translate-x-full',
+            'animate-in slide-in-from-right duration-300 ease-out',
             'focus:outline-none',
           )}
         >
