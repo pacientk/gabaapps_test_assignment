@@ -16,6 +16,7 @@ import { UsersFilters } from '@/widgets/users-filters/ui/UsersFilters'
 import { UsersTable } from '@/widgets/users-table/ui/UsersTable'
 import { UserDrawer } from '@/widgets/user-drawer/ui/UserDrawer'
 import { useDrawerStore } from '@/widgets/user-drawer/model/useDrawerStore'
+import { StatsBar } from '@/widgets/stats-bar/ui/StatsBar'
 import { useLocalStorage } from '@/shared/lib/useLocalStorage'
 
 /**
@@ -137,6 +138,9 @@ export function UsersPage() {
             </div>
           </div>
         </div>
+
+        {/* Stats bar */}
+        <StatsBar />
 
         {/* Main content */}
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-8">
