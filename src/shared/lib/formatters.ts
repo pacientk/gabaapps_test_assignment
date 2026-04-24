@@ -40,3 +40,38 @@ export function formatPhone(phone: string): string {
 export function formatFullName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`.trim()
 }
+
+/**
+ * Masks a payment card number, showing only the last 4 digits.
+ * e.g. "4539578763621486" → "**** **** **** 1486"
+ *
+ * @param cardNumber - Raw card number string (digits or formatted)
+ */
+export function maskCardNumber(cardNumber: string): string {
+  const digits = cardNumber.replace(/\D/g, '')
+  const last4 = digits.slice(-4)
+  return `**** **** **** ${last4}`
+}
+
+/**
+ * Masks an IBAN, showing only the first 4 and last 4 characters.
+ * e.g. "GB82WEST12345698765432" → "GB82 **** 5432"
+ *
+ * @param iban - Raw IBAN string
+ */
+export function maskIban(iban: string): string {
+  const clean = iban.replace(/\s/g, '')
+  if (clean.length <= 8) return iban
+  return `${clean.slice(0, 4)} **** ${clean.slice(-4)}`
+}
+
+/**
+ * Truncates a crypto wallet address: first 6 chars + "..." + last 4 chars.
+ * e.g. "0x93d8cBB4..." → "0x93d8...cBB4"
+ *
+ * @param address - Full wallet address string
+ */
+export function truncateWallet(address: string): string {
+  if (address.length <= 12) return address
+  return `${address.slice(0, 6)}...${address.slice(-4)}`
+}

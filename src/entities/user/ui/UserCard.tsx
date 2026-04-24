@@ -1,8 +1,10 @@
 'use client'
 
+import { useRef } from 'react'
 import { Mail, MapPin } from 'lucide-react'
 import { cn } from '@/shared/lib/cn'
 import { formatFullName } from '@/shared/lib/formatters'
+import { usePrefetchUser } from '../model/useUsers'
 import type { User } from '../model/schemas'
 import { UserAvatar } from './UserAvatar'
 import { UserBadge } from './UserBadge'
@@ -15,10 +17,23 @@ interface UserCardProps {
 
 /**
  * Card component for the users grid.
- * Keyboard-accessible: activatable with Enter/Space.
+ * Keyboard-accessible (Enter/Space). Prefetches user detail on hover (200ms delay).
  */
 export function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
   const fullName = formatFullName(user.firstName, user.lastName)
+  const prefetchUser = usePrefetchUser()
+  const prefetchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleMouseEnter = () => {
+    prefetchTimer.current = setTimeout(() => prefetchUser(user.id), 200)
+  }
+
+  const handleMouseLeave = () => {
+    if (prefetchTimer.current) {
+      clearTimeout(prefetchTimer.current)
+      prefetchTimer.current = null
+    }
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -34,6 +49,8 @@ export function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
       aria-pressed={isSelected}
       onClick={() => onClick(user.id)}
       onKeyDown={handleKeyDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         'cursor-pointer rounded-xl border bg-white p-4 transition-all duration-150 ease-out',
         'hover:border-blue-300 hover:shadow-md hover:scale-[1.01]',
@@ -53,7 +70,6 @@ export function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
             </p>
             <UserBadge role={user.role} />
           </div>
-          {/* Job title */}
           <p className="mt-0.5 truncate text-sm text-gray-500">
             {user.company.title}
           </p>
