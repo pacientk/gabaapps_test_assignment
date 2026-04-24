@@ -2,6 +2,19 @@
 
 A production-quality Users Dashboard built with Next.js 14 App Router. Displays, searches, filters, and sorts 208 users from the [dummyjson.com](https://dummyjson.com/users) public API. Built to demonstrate senior-level frontend architecture — not just working code, but deliberate decisions.
 
+**[Live Demo →](https://gabaapps-test-assignment.vercel.app/users)**
+
+![Users Dashboard — grid view](public/screenshots/grid-view.png)
+
+<details>
+<summary>More screenshots</summary>
+
+![User detail drawer](public/screenshots/drawer-open.png)
+
+![Active filters — Female · Engineering · sorted by Age](public/screenshots/filters-active.png)
+
+</details>
+
 ---
 
 ## Features
@@ -84,7 +97,7 @@ The full dataset is fetched once (`GET /users?limit=0`), cached for 10 minutes, 
 ```bash
 # Prerequisites: Node.js 20+, pnpm 9+
 
-git clone https://github.com/KirTer/users-dashboard
+git clone https://github.com/pacientk/gabaapps_test_assignment
 cd users-dashboard
 pnpm install
 pnpm dev
