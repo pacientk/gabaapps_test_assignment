@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 /**
  * useState backed by localStorage for simple persistent client-side preferences.
@@ -20,7 +20,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T)
     }
   })
 
-  const setValue = (value: T) => {
+  const setValue = useCallback((value: T) => {
     setStoredValue(value)
     if (typeof window !== 'undefined') {
       try {
@@ -29,7 +29,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T)
         // localStorage unavailable (e.g. Safari private mode)
       }
     }
-  }
+  }, [key])
 
   return [storedValue, setValue]
 }

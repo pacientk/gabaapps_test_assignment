@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { memo, useRef } from 'react'
 import { Mail, MapPin } from 'lucide-react'
 import { cn } from '@/shared/lib/cn'
 import { formatFullName } from '@/shared/lib/formatters'
@@ -19,7 +19,7 @@ interface UserCardProps {
  * Card component for the users grid.
  * Keyboard-accessible (Enter/Space). Prefetches user detail on hover (200ms delay).
  */
-export function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
+export const UserCard = memo(function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
   const fullName = formatFullName(user.firstName, user.lastName)
   const prefetchUser = usePrefetchUser()
   const prefetchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -97,4 +97,4 @@ export function UserCard({ user, onClick, isSelected = false }: UserCardProps) {
       </p>
     </article>
   )
-}
+})

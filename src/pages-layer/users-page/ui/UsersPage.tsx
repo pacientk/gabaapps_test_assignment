@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { LayoutGrid, List, AlertTriangle, SearchX } from 'lucide-react'
 import { parseAsInteger, useQueryState } from 'nuqs'
 import { cn } from '@/shared/lib/cn'
@@ -44,15 +44,16 @@ export function UsersPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleOpenDrawer = (id: number) => {
+  // Zustand actions and nuqs setters are stable — useCallback gives a stable ref for React.memo on UserCard
+  const handleOpenDrawer = useCallback((id: number) => {
     openDrawer(id)
     void setUrlUserId(id)
-  }
+  }, [openDrawer, setUrlUserId])
 
-  const handleCloseDrawer = () => {
+  const handleCloseDrawer = useCallback(() => {
     closeDrawer()
     void setUrlUserId(null)
-  }
+  }, [closeDrawer, setUrlUserId])
 
   // Pagination
   const { page, limit, setPage, setLimit } = usePagination()

@@ -1,7 +1,8 @@
 import { ApiError } from '@/shared/types/api'
 import { logger } from '@/shared/lib/logger'
+import { env } from '@/shared/config/env'
 
-const BASE_URL = 'https://dummyjson.com'
+const BASE_URL = env.NEXT_PUBLIC_API_URL
 
 /**
  * Serializes a params object into a URL query string.
