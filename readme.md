@@ -4,14 +4,14 @@ A production-quality Users Dashboard built with Next.js 14 App Router. Displays,
 
 **[Live Demo →](https://gabaapps-test-assignment.vercel.app/users)**
 
-![Users Dashboard — grid view](public/screenshots/grid-view.png)
+![Users Dashboard — grid view](public/screenshots/grid-view.png?v=2)
 
 <details>
 <summary>More screenshots</summary>
 
-![User detail drawer](public/screenshots/drawer-open.png)
+![User detail drawer](public/screenshots/drawer-open.png?v=2)
 
-![Active filters — Female · Engineering · sorted by Age](public/screenshots/filters-active.png)
+![Active filters — Female · Engineering · sorted by Age](public/screenshots/filters-active.png?v=2)
 
 </details>
 
