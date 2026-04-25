@@ -3,7 +3,7 @@ import { UsersPage } from '@/pages-layer/users-page/ui/UsersPage'
 import { UserCardSkeleton } from '@/entities/user/ui/UserCardSkeleton'
 
 export const metadata = {
-  title: 'Users — Users Dashboard',
+  title: 'Users Dashboard by Kirill Ter',
 }
 
 function LoadingFallback() {
