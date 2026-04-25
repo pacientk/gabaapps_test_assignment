@@ -237,7 +237,7 @@ topDepartments = Object.entries(
 ---
 
 ## F-008: Responsive Layout
-**Priority**: P0 | **Status**: 🔄 in-progress (baseline implemented, mobile drawer not yet done)
+**Priority**: P0 | **Status**: 🔄 in-progress
 
 ### Breakpoints
 - `sm`: 640px — 1 column cards, bottom sheet drawer
@@ -246,7 +246,7 @@ topDepartments = Object.entries(
 - `xl`: 1280px — 3 column cards + wider drawer (560px)
 
 ### Mobile-specific behavior
-- Filter panel → collapsed behind "Filters" button with badge
-- Drawer → full-screen bottom sheet with drag-to-close
-- Pagination → simplified (prev/next + page X of Y only)
-- Stats bar → horizontal scroll
+- [x] Drawer → full-screen bottom sheet with drag-to-close (`207ebbd`)
+- [x] Pagination → simplified: prev/next + "Page X of Y" (`sm:hidden` / `hidden sm:flex`)
+- [x] Stats bar → 2×2 card grid on mobile (intentional deviation from "horizontal scroll")
+- [ ] Filter panel → collapsed behind "Filters" button with active-filter badge
