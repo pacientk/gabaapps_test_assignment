@@ -105,7 +105,8 @@ export function UsersPage() {
         <div className="border-b border-gray-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-4 sm:px-8">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-gray-900">Users</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Users Dashboard</h1>
+              <h3 className="px-4 text-sm italic text-gray-900 justify-start items-start">Created by <span className="font-bold">Kirill{'\u00A0'}Ter</span> for Gaba{'\u00A0'}Apps as a{'\u00A0'}test assignment</h3>
 
               {/* View toggle */}
               <div className="flex items-center gap-1 rounded-lg border border-gray-200 bg-gray-50 p-0.5">
@@ -114,9 +115,9 @@ export function UsersPage() {
                   aria-label="Grid view"
                   aria-pressed={viewMode === 'grid'}
                   className={cn(
-                    'rounded-md p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+                    'rounded-md p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:text-gray-400',
                     viewMode === 'grid'
-                      ? 'bg-white text-blue-600 shadow-sm'
+                      ? 'bg-white text-gray-900 shadow-sm'
                       : 'text-gray-400 hover:text-gray-600',
                   )}
                 >
@@ -127,9 +128,9 @@ export function UsersPage() {
                   aria-label="Table view"
                   aria-pressed={viewMode === 'table'}
                   className={cn(
-                    'rounded-md p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+                    'rounded-md p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:text-gray-400',
                     viewMode === 'table'
-                      ? 'bg-white text-blue-600 shadow-sm'
+                      ? 'bg-white text-gray-900 shadow-sm'
                       : 'text-gray-400 hover:text-gray-600',
                   )}
                 >

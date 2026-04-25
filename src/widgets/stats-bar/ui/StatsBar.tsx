@@ -35,7 +35,7 @@ interface StatCellProps {
 function StatCell({ label, icon, children }: StatCellProps) {
   return (
     <div className="flex flex-col gap-1.5 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-gray-400">
+      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-gray-800">
         {icon}
         {label}
       </p>
@@ -73,14 +73,14 @@ export function StatsBar() {
           label="Gender"
           icon={<UserCheck className="h-3 w-3" aria-hidden="true" />}
         >
-          <div className="flex items-baseline gap-3">
-            <span className="flex items-baseline gap-1">
-              <span className="text-lg font-semibold text-blue-600">{stats.maleCount}</span>
-              <span className="text-xs text-gray-400">M ({stats.malePercent}%)</span>
+          <div className="flex items-baseline gap-6">
+            <span className="flex flex-col items-baseline">
+              <span className="text-2xl font-semibold text-gray-900">M:{'\u00A0'}{stats.maleCount}</span>
+              <span className="text-sm text-gray-600">({stats.malePercent}%)</span>
             </span>
-            <span className="flex items-baseline gap-1">
-              <span className="text-lg font-semibold text-rose-500">{stats.femaleCount}</span>
-              <span className="text-xs text-gray-400">F ({stats.femalePercent}%)</span>
+            <span className="flex flex-col items-baseline">
+              <span className="text-2xl font-semibold text-gray-900">F:{'\u00A0'}{stats.femaleCount}</span>
+              <span className="text-sm text-gray-600">({stats.femalePercent}%)</span>
             </span>
           </div>
         </StatCell>
