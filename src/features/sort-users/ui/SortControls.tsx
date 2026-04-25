@@ -23,14 +23,14 @@ export function SortControls({
   onOrderChange,
 }: SortControlsProps) {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex w-full items-center gap-1.5 sm:w-auto">
       <select
         id="sort-by"
         name="sortBy"
         value={sortBy}
         onChange={(e) => onSortByChange(e.target.value as SortableField | '')}
         aria-label="Sort by field"
-        className="h-9 rounded-lg border border-gray-200 bg-white pl-3 pr-8 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="h-9 flex-1 rounded-lg border border-gray-200 bg-white pl-3 pr-8 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:flex-none"
       >
         <option value="">Sort by…</option>
         {SORT_FIELDS.map((f) => (

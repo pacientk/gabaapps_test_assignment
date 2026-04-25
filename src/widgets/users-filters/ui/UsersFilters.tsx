@@ -81,7 +81,7 @@ export function UsersFilters({
           activeCount={activeFilterCount}
         />
 
-        <div className="ml-auto">
+        <div className="w-full sm:ml-auto sm:w-auto">
           <SortControls
             sortBy={sortBy}
             order={order}

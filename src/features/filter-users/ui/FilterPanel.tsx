@@ -21,9 +21,9 @@ const GENDER_OPTIONS: { value: UserGender | ''; label: string }[] = [
 ]
 
 const selectClass = cn(
-  'h-9 rounded-lg border border-gray-200 bg-white pl-3 pr-8 text-sm text-gray-700',
+  'h-9 w-full rounded-lg border border-gray-200 bg-white pl-3 pr-8 text-sm text-gray-700',
   'focus:outline-none focus:ring-2 focus:ring-blue-500',
-  'transition-colors',
+  'transition-colors sm:w-auto',
 )
 
 /**

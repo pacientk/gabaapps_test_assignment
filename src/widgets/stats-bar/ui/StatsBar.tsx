@@ -75,11 +75,11 @@ export function StatsBar() {
         >
           <div className="flex items-baseline gap-6">
             <span className="flex flex-col items-baseline">
-              <span className="text-2xl font-semibold text-gray-900">M:{'\u00A0'}{stats.maleCount}</span>
+              <span className="text-lg font-semibold text-gray-900 sm:text-2xl">M:{'\u00A0'}{stats.maleCount}</span>
               <span className="text-sm text-gray-600">({stats.malePercent}%)</span>
             </span>
             <span className="flex flex-col items-baseline">
-              <span className="text-2xl font-semibold text-gray-900">F:{'\u00A0'}{stats.femaleCount}</span>
+              <span className="text-lg font-semibold text-gray-900 sm:text-2xl">F:{'\u00A0'}{stats.femaleCount}</span>
               <span className="text-sm text-gray-600">({stats.femalePercent}%)</span>
             </span>
           </div>
