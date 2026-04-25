@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Tabs from '@radix-ui/react-tabs'
 import { X } from 'lucide-react'
@@ -26,17 +27,69 @@ const TAB_LIST = [
   { value: 'crypto', label: 'Crypto' },
 ] as const
 
+/** Returns true when the viewport is narrower than Tailwind's `sm` breakpoint (640px). */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return isMobile
+}
+
 /**
- * Right-side user detail drawer built on Radix Dialog.
- * - 560px wide on desktop, full-screen on mobile
- * - Slide-in/out animation via data-state CSS transitions (forceMount)
- * - Focus is trapped inside while open (Radix default)
- * - Closes on Escape, backdrop click, or X button
- * - URL sync (?userId=) is managed by the parent (UsersPage)
+ * User detail drawer.
+ * - Desktop (≥640px): slides in from the right, 560px wide
+ * - Mobile (<640px): bottom sheet, slides up from the bottom,
+ *   drag handle + drag-to-close (swipe down ≥100px or fast flick)
  */
 export function UserDrawer({ userId, onClose }: UserDrawerProps) {
   const isOpen = userId !== null
   const { data: user, isLoading, isError } = useUser(userId)
+  const isMobile = useIsMobile()
+
+  // ─── Drag-to-close state (mobile only) ───────────────────────────────────
+  const [dragY, setDragY] = useState(0)
+  const dragStartY = useRef(0)
+  const dragStartTime = useRef(0)
+  const isDragging = useRef(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    // Only initiate drag when the scrollable area is at the very top
+    if (scrollRef.current && scrollRef.current.scrollTop > 0) return
+    isDragging.current = true
+    dragStartY.current = e.touches[0]?.clientY ?? 0
+    dragStartTime.current = Date.now()
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current) return
+    const delta = (e.touches[0]?.clientY ?? 0) - dragStartY.current
+    if (delta > 0) setDragY(delta)
+  }
+
+  const handleTouchEnd = () => {
+    if (!isDragging.current) return
+    isDragging.current = false
+
+    const elapsed = Date.now() - dragStartTime.current
+    const velocity = dragY / elapsed // px/ms
+
+    // Close on: dragged ≥100px OR fast flick (≥0.4 px/ms with ≥30px drag)
+    if (dragY >= 100 || (velocity >= 0.4 && dragY >= 30)) {
+      onClose()
+    }
+    setDragY(0)
+  }
+
+  // Reset drag state whenever the drawer closes
+  useEffect(() => {
+    if (!isOpen) setDragY(0)
+  }, [isOpen])
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
@@ -52,13 +105,29 @@ export function UserDrawer({ userId, onClose }: UserDrawerProps) {
         {/* Drawer panel */}
         <Dialog.Content
           aria-label="User details"
+          onTouchStart={isMobile ? handleTouchStart : undefined}
+          onTouchMove={isMobile ? handleTouchMove : undefined}
+          onTouchEnd={isMobile ? handleTouchEnd : undefined}
+          style={
+            isMobile && dragY > 0
+              ? { transform: `translateY(${dragY}px)`, transition: 'none' }
+              : undefined
+          }
           className={cn(
-            'fixed right-0 top-0 z-50 flex h-full w-full flex-col bg-white shadow-2xl',
-            'sm:max-w-[560px]',
-            'animate-in slide-in-from-right duration-300 ease-out',
-            'focus:outline-none',
+            'fixed z-50 flex flex-col bg-white shadow-2xl focus:outline-none',
+            // Mobile: bottom sheet
+            'bottom-0 left-0 right-0 h-[92dvh] rounded-t-2xl',
+            'animate-in slide-in-from-bottom duration-300 ease-out',
+            // Desktop: right-side drawer
+            'sm:bottom-auto sm:left-auto sm:right-0 sm:top-0 sm:h-full sm:w-full sm:max-w-[560px] sm:rounded-none',
+            'sm:animate-in sm:slide-in-from-right sm:duration-300 sm:ease-out',
           )}
         >
+          {/* Drag handle (mobile only) */}
+          <div className="flex justify-center pt-3 pb-1 sm:hidden" aria-hidden="true">
+            <div className="h-1 w-10 rounded-full bg-gray-300" />
+          </div>
+
           {/* Sticky header */}
           <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-6 py-4">
             <Dialog.Title className="text-base font-semibold text-gray-900">
@@ -75,7 +144,7 @@ export function UserDrawer({ userId, onClose }: UserDrawerProps) {
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto">
             {isLoading && <DrawerSkeleton />}
 
             {isError && (
